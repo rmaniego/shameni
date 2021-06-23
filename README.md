@@ -1,4 +1,4 @@
-# clairvoyance
+# shameni
 The official Presage Python wrapper, a straightforward cryptocurrency prediction service.
 
 Powered by [CoinGecko](https://www.coingecko.com/api/documentations/v3) and [Presage](http://presage.herokuapp.com/) API.
@@ -8,7 +8,7 @@ Powered by [CoinGecko](https://www.coingecko.com/api/documentations/v3) and [Pre
 ## Usage
 **Import Package**
 ```python
-from clairvoyance import Gaze
+from shameni import Gaze
 ```
 
 **Initialization**

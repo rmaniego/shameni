@@ -1,4 +1,4 @@
-from clairvoyance import Gaze
+from shameni import Gaze
 
 crypto = Gaze("cached.json")
 print("Cryptocurrencies:", ", ".join(crypto.supported()))

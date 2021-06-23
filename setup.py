@@ -4,17 +4,17 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setuptools.setup(
-    name = 'clairvoyance',
-    packages = ["clairvoyance"],
+    name = 'shameni',
+    packages = ["shameni"],
     version = '1.0.0',
     license='MIT',
-    description = 'The official Presage Python wrapper, a straightforward cryptocurrency prediction service.',
+    description = 'The official Python wrapper for Presage, a straightforward cryptocurrency prediction service.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     author = 'Rodney Maniego Jr.',
     author_email = 'rod.maniego23@gmail.com',
-    url = 'https://github.com/rmaniego/clairvoyance',
-    download_url = 'https://github.com/rmaniego/clairvoyance/archive/v1.0.tar.gz',
+    url = 'https://github.com/rmaniego/shameni',
+    download_url = 'https://github.com/rmaniego/shameni/archive/v1.0.tar.gz',
     keywords = ['presage', 'cryptocurrency', 'prediction', 'python', 'wrapper'],
     install_requires=["requests", "arkivist"],
     classifiers=[
