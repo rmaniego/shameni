@@ -1,0 +1,15 @@
+LICENSE
+README.md
+commit.sh
+pypi.sh
+setup.cfg
+setup.py
+tests.py
+shameni/__init__.py
+shameni/shameni.py
+shameni/version.py
+shameni.egg-info/PKG-INFO
+shameni.egg-info/SOURCES.txt
+shameni.egg-info/dependency_links.txt
+shameni.egg-info/requires.txt
+shameni.egg-info/top_level.txt
