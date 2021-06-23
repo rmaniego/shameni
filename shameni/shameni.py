@@ -1,6 +1,6 @@
 """
     (c) 2020 Rodney Maniego Jr.
-    Clairvoyance
+    Shameni
 """
 
 from arkivist import Arkivist
