@@ -3,6 +3,8 @@
     Shameni
 """
 
+import requests
+
 from arkivist import Arkivist
 from sometime import Sometime
 
@@ -10,6 +12,12 @@ class Gaze:
     def __init__(self, cachefile=""):
         self.cached = Arkivist(cachefile, sort=True)
         pass
+    
+    def ping(self):
+        status = requests.get("http://presage.herokuapp.com/ping")
+        if status.status_code == 200:
+            return True
+        return False
     
     def supported(self):
         try:

@@ -13,3 +13,6 @@ shameni.egg-info/SOURCES.txt
 shameni.egg-info/dependency_links.txt
 shameni.egg-info/requires.txt
 shameni.egg-info/top_level.txt
+shameni/__pycache__/__init__.cpython-39.pyc
+shameni/__pycache__/shameni.cpython-39.pyc
+shameni/__pycache__/version.cpython-39.pyc

@@ -25,6 +25,12 @@ crypto = Gaze()
 crypto = Gaze("predictions.json")
 ```
 
+**Check connection**
+```python
+if crypto.ping():
+    print("Live!")
+```
+
 **Prediction**
 ```python
 # get supported cryptocurrency list

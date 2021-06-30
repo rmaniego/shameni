@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
 setuptools.setup(
     name = 'shameni',
     packages = ["shameni"],
-    version = '1.0.1',
+    version = '1.0.2',
     license='MIT',
     description = 'The official Python wrapper for Presage, a straightforward cryptocurrency prediction service.',
     long_description=long_description,
