@@ -4,13 +4,15 @@
 """
 
 import requests
+from statistics import mean
 
 from arkivist import Arkivist
 from sometime import Sometime
 
 class Gaze:
-    def __init__(self, cachefile=""):
+    def __init__(self, cachefile="", prices=""):
         self.cached = Arkivist(cachefile, sort=True)
+        self.prices = Arkivist(prices, sort=True)
         pass
     
     def ping(self):
@@ -18,6 +20,36 @@ class Gaze:
         if status.status_code == 200:
             return True
         return False
+
+    def accuracy(self, coin, currency="usd"):
+        accuracies = []
+        predictions = self.cached.get(coin, {})
+        for date, predicted in predictions.items():
+            actual = self.prices.get(date, {}).get(coin, {}).get(currency, -1)
+            if actual > 1:
+                prediction_accuracy = (100 - (((predicted - actual) / actual) * 100))
+                if prediction_accuracy > 100:
+                    prediction_accuracy = (100 - (prediction_accuracy - 100))
+                accuracies.append(prediction_accuracy)
+        if len(accuracies) > 0:
+            return mean(accuracies)
+        return 0
+    
+    def price(self, coin, currency="usd", date=None):
+        try:
+            if not isinstance(date, str):
+                date = Sometime().custom("%Y-%m-%d")
+            prices = self.prices.get(date, {})
+            actual = prices.get(coin, -1)
+            if actual > 0:
+                return actual
+            url = f"http://presage.herokuapp.com/price?coins={coin}&vs_currencies={currency}"
+            prices.update(Arkivist().fetch(url).show())
+            self.prices.set(date, prices)
+            return prices.get(coin, {}).get(currency, -1)
+        except:
+            pass
+        return -1
     
     def supported(self):
         try:
@@ -74,9 +106,9 @@ class Gaze:
                 for day in range(7):
                     day -= 1
                     date = Sometime().add(days=-day).custom("%Y-%m-%d")
-                    price = cached.get(date, -1)
-                    if price > 0:
-                        predictions.update({date: price})
+                    token_prediction = cached.get(date, -1)
+                    if token_prediction > 0:
+                        predictions.update({date: token_prediction})
                 return predictions
             try:
                 url = f"http://presage.herokuapp.com/historical?coins={token}&currency={currency}&secret={secret}"

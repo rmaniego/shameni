@@ -31,6 +31,16 @@ if crypto.ping():
     print("Live!")
 ```
 
+**Check CoinGecko actual price**
+```python
+price = crypto.price("bitcoin")
+```
+
+**Check average accuracy**
+```python
+accuracy = crypto.accuracy("bitcoin")
+```
+
 **Prediction**
 ```python
 # get supported cryptocurrency list
