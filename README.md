@@ -31,35 +31,43 @@ if crypto.ping():
     print("Live!")
 ```
 
-**Check CoinGecko actual price**
+**Supported tokens**
+```python
+for token in crypto.supported():
+    print(token)
+```
+
+**Actual Price**
+Returns the actual cryptocurrency price
 ```python
 price = crypto.price("bitcoin")
 ```
 
-**Check average accuracy**
+**Weighted Average**
+Returns the periodic WAVGs
 ```python
-accuracy = crypto.accuracy("bitcoin")
+# days = 1, 3, 7, 15, 30, 60, 90
+wavg = crypto.wavg("bitcoin", 3)
+```
+
+**Request**
+Requests for next-day prediction.
+```python
+crypto.request("bitcoin")
 ```
 
 **Prediction**
+Returns the available next-day prediction.
 ```python
-# get supported cryptocurrency list
-coins = crypto.supported()
-
-for coin in coins:
-    print(coin)
-
-# predict next day prediction
-prediction = crypto.tomorrow("bitcoin")
-
-# get today's prediction
-prediction = crypto.today("bitcoin")
+    tomorrow = crypto.tomorrow("bitcoin")
+    if tomorrow > 0:
+        print(f" - Tomorrow: {tomorrow:,.2f} USD")
 ```
 
-**Historical Data**
-Up to seven days of historical predictions
+**Distance**
+Returns the historical distance between the atcual price and predictions.
 ```python
-history = crypto.historical("bitcoin")
-for date, price in history.items():
-    print(f"{date}: {price:,.2f} USD")
+gap = crypto.distance("bitcoin")
+if gap > 0:
+    print(f" - Distance: {gap:,.6f}")
 ```

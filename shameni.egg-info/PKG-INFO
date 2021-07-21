@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: shameni
-Version: 1.0.3
+Version: 1.0.4
 Summary: The official Python wrapper for Presage, a straightforward cryptocurrency prediction service.
 Home-page: https://github.com/rmaniego/shameni
 Author: Rodney Maniego Jr.
