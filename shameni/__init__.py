@@ -1,4 +1,4 @@
 """ shameni """
-from .version import version as __version__
+__version__ = "1.1.0"
 from .shameni import Gaze
 __all__ = ["shameni"]

@@ -5,63 +5,55 @@
 
 import requests
 from statistics import mean
-
 from arkivist import Arkivist
 from sometime import Sometime
 
 class Gaze:
-    def __init__(self, cachefile=""):
-        self.cached = Arkivist(cachefile, sort=True)
+    def __init__(self, cachefile=None):
+        autosave = True
+        if cachefile is None:
+            autosave = False
+            cachefile = "cached.json"
+        filename = "".join(cachefile.split(".")[:-1]) + "-prices.json"
+        self.cached = Arkivist(cachefile, sort=True, autosave=autosave)
+        self.prices = Arkivist(filename, sort=True, autosave=autosave)
         pass
     
     def ping(self):
         try:
-            status = requests.get("http://presage.herokuapp.com/ping")
-            return (status.status_code == 200)
+            url = "http://presage.herokuapp.com/ping"
+            return (requests.get(url).status_code == 200)
         except:
-            pass
-        return False
+            return False
     
     def supported(self):
         try:
             url = f"http://presage.herokuapp.com/supported"
             return Arkivist().fetch(url).get("supported", [])
         except:
-            pass
-        return []
+            return []
     
     def price(self, token):
-        try:
-            currency = "usd"
+        if isinstance(token, str):
+            token = list(token.split(","))[0]
             date = Sometime().custom("%Y-%m-%d")
-            prices = self.prices.get(date, {})
-            actual = prices.get(token, -1)
-            if actual > 0:
-                return actual
-            url = f"http://presage.herokuapp.com/price?coins={token}&vs_currencies={currency}"
-            prices.update(Arkivist().fetch(url).show())
-            price = prices.get(token, {}).get(currency, -1)
-            for token, data in prices:
-                token_data = self.cached.get(token, {})
-                token_price = token_data.get("prices", {})
-                price = data.get(currency, -1)
-                if price > 0:
-                    token_price.update({date: price})
-                    token_data.update({"prices": token_price})
-                    self.cached.set(token, token_data)
-            return price
-        except:
-            pass
+            price = self.prices.get(token, {}).get(date, -1)
+            if price > 0:
+                return price
+            try:
+                url = f"http://presage.herokuapp.com/tomorrow?tokens={token}"
+                price = list(Arkivist().fetch(url).get(token, {}).values())[-1]
+                if token not in self.prices:
+                    self.prices.set(token, {})
+                self.prices.find(token).set(date, price)
+                return price
+            except:
+                pass
         return -1
 
-    def wavg(self, token, days):
-        token = list(token.split(","))[0]
-        url = f"http://presage.herokuapp.com/wavg?coins={token}"
-        return Arkivist().fetch(url).show().get(token, {}).get(days, -1)
-
-    def request(self, coins):
-        if isinstance(coins, str):
-            status = requests.get(f"http://presage.herokuapp.com/request?coins={coins}")
+    def request(self, tokens):
+        if isinstance(tokens, str):
+            status = requests.get(f"http://presage.herokuapp.com/request?tokens={tokens}")
             return (status.status_code == 200)
         return False
     
@@ -73,17 +65,12 @@ class Gaze:
             if predicted > 0:
                 return predicted
             try:
-                url = f"http://presage.herokuapp.com/tomorrow?coins={token}"
+                url = f"http://presage.herokuapp.com/tomorrow?tokens={token}"
                 predicted = list(Arkivist().fetch(url).get(token, {}).values())[-1]
-                token_predictions.update({date: predicted})
-                token_data.update("predictions", token_predictions)
-                self.cached.update({token: token_data})
+                if token not in self.cached:
+                    self.cached.set(token, {})
+                self.cached.find(token).set(date, predicted)
                 return predicted
             except:
                 pass
         return -1
-
-    def distance(self, token):
-        token = list(token.split(","))[0]
-        url = f"http://presage.herokuapp.com/distance?coins={token}"
-        return Arkivist().fetch(url).show().get("distance", -1)
